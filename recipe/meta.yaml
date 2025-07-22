@@ -1,16 +1,17 @@
-{% set version = "0.4.2" %}
+{% set name = "missingno" %}
+{% set version = "0.5.2" %}
 
 package:
-  name: missingno
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.io/packages/source/m/missingno/missingno-{{ version }}.tar.gz
-  sha256: 02eb92085e4efa0d4c06239750ac44a8d6cc5979bf5b954a09c47b648413ff41
+  sha256: 4a4baa9ca9f9e4e0d9402455df26b656632e94b99e87fa64c0cdbbbc722837ac
 
 build:
   noarch: python
-  number: 1
+  number: 0
   script: python -m pip install --no-deps --ignore-installed .
 
 requirements:
