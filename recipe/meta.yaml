@@ -26,11 +26,17 @@ requirements:
     - seaborn
 
 test:
+  source_files:
+    - tests
   imports:
     - missingno
+  requires:
+    - pip
+    - pytest
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -vv tests
 
 about:
   home: https://github.com/ResidentMario/missingno
