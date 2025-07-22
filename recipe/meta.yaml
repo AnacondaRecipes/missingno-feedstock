@@ -14,14 +14,14 @@ build:
   script: {{ PYTHON }} -m pip install --no-deps --no-build-isolation --ignore-installed -vvv .
 
 requirements:
-  build:
+  host:
     - python
     - pip
+    - setuptools
   run:
     - python
     - numpy
     - scipy
-    - pandas
     - matplotlib-base
     - seaborn
 
