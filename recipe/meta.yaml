@@ -18,6 +18,7 @@ requirements:
     - python
     - pip
     - setuptools
+    - wheel
   run:
     - python
     - numpy
@@ -59,9 +60,15 @@ about:
   home: https://github.com/ResidentMario/missingno
   license: MIT
   license_family: MIT
-  license_file: '{{ environ["RECIPE_DIR"] }}/LICENSE'
-  summary: 'Missing data visualization module for Python.'
-
+  license_file: LICENSE.md
+  summary: Missing data visualization module for Python.
+  description: |
+    Messy datasets? Missing values? missingno provides a small toolset
+    of flexible and easy-to-use missing data visualizations and
+    utilities that allows you to get a quick visual summary of the
+    completeness (or lack thereof) of your dataset.
+  dev_url: https://github.com/ResidentMario/missingno
+  doc_url: https://github.com/ResidentMario/missingno
 extra:
   recipe-maintainers:
     - ericmjl
