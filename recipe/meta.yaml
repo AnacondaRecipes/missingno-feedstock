@@ -6,10 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  #url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  #sha256: 4a4baa9ca9f9e4e0d9402455df26b656632e94b99e87fa64c0cdbbbc722837ac
-  url: https://github.com/ResidentMario/missingno/archive/refs/tags/0.5.2.tar.gz
-  sha256: 48be5708007e304432528cfe458eaf3f15c6cab15cd1d5065721e084d887d964
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 4a4baa9ca9f9e4e0d9402455df26b656632e94b99e87fa64c0cdbbbc722837ac
 
 build:
   number: 0
