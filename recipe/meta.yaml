@@ -1,41 +1,74 @@
-{% set version = "0.4.2" %}
+{% set name = "missingno" %}
+{% set version = "0.5.2" %}
 
 package:
-  name: missingno
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/m/missingno/missingno-{{ version }}.tar.gz
-  sha256: 02eb92085e4efa0d4c06239750ac44a8d6cc5979bf5b954a09c47b648413ff41
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 4a4baa9ca9f9e4e0d9402455df26b656632e94b99e87fa64c0cdbbbc722837ac
 
 build:
-  noarch: python
-  number: 1
-  script: python -m pip install --no-deps --ignore-installed .
+  number: 0
+  script: {{ PYTHON }} -m pip install --no-deps --no-build-isolation --ignore-installed -vvv .
 
 requirements:
-  build:
+  host:
     - python
     - pip
+    - setuptools
+    - wheel
   run:
     - python
     - numpy
     - scipy
-    - pandas
     - matplotlib-base
     - seaborn
+    # Undocumented dependency
+    - pandas
+
+  # Tests appear to be broken, and likely never worked in the first place (upstream project lacks CI)
+  # Older versions neither dependencies (pandas, numpy, python), nor code (commits where they were 
+  # introduced) seem to work. Skipping those tests.
+  {% set skip_tests = "" %}
+  # Test broken due to using an incorrect frequency 'BQ' (quarterly) on month based index.
+  # KeyError: 'Could not divide time index into desired frequency.'
+  # Related: https://github.com/ResidentMario/missingno/issues/154
+  # Related: https://github.com/ResidentMario/missingno/issues/106
+  {% set skip_tests = skip_tests + " --deselect=tests/test_viz.py::TestMatrix::test_freq_matrix" %}
+  # Tests broken due to attempted dataframe assignment with wrong shape
+  # IndexError: single positional indexer is out-of-bounds
+  {% set skip_tests = skip_tests + " --deselect=tests/test_viz.py::TestDendrogram::test_method_dendrogram" %}
+  {% set skip_tests = skip_tests + " --deselect=tests/test_viz.py::TestDendrogram::test_orientation_dendrogram" %}
+  {% set skip_tests = skip_tests + " --deselect=tests/test_viz.py::TestDendrogram::test_simple_dendrogram" %}
 
 test:
+  source_files:
+    - tests
   imports:
     - missingno
+  requires:
+    - pip
+    - pytest
+  commands:
+    - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -vv {{ skip_tests }} tests
 
 about:
   home: https://github.com/ResidentMario/missingno
   license: MIT
   license_family: MIT
-  license_file: '{{ environ["RECIPE_DIR"] }}/LICENSE'
-  summary: 'Missing data visualization module for Python.'
-
+  license_file: LICENSE.md
+  summary: Missing data visualization module for Python.
+  description: |
+    Messy datasets? Missing values? missingno provides a small toolset
+    of flexible and easy-to-use missing data visualizations and
+    utilities that allows you to get a quick visual summary of the
+    completeness (or lack thereof) of your dataset.
+  dev_url: https://github.com/ResidentMario/missingno
+  doc_url: https://github.com/ResidentMario/missingno
 extra:
   recipe-maintainers:
     - ericmjl
